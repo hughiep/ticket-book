@@ -20,4 +20,4 @@ The scale of system is:
 1. The system should be highly consistent. No double booking.
 2. The system should be highly available for searching events and viewing events.
 3. The system should be highly scalable for booking popular events tickets. (1M at a time)
-4. Low latency for searching events and viewing events.
+4. Low latency for searching events and viewing events, <500ms is acceptable.
