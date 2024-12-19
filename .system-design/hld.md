@@ -29,3 +29,10 @@ User requests events by sending a request to the search service. The search serv
 Components
 
 - Booking Service: The booking service is responsible for booking tickets for the user.
+- Payment Service: The payment service is responsible for processing the payment.
+- Ticket & Booking tables persited in DB: The ticket and booking tables store the ticket and booking details.
+
+Using a database that supports ACID transactions, the booking service creates a booking record and updates the ticket availability. This also ensures that only one user can book a ticket at a time. We'll go with a relational database like PostgreSQL.
+
+*There will be a API Gateway that will route the requests to the appropriate service.*
+*Load balancer will distribute the incoming requests to the appropriate server.*
