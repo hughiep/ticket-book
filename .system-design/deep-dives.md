@@ -52,3 +52,59 @@ Challenge:
 
 - Read operation to check the status of the ticket and expiration time, which be slightly slower, although it can be improved by using indexes.
 - Database is less legible since some reservations are acutally expired.
+
+#### Distributed locks
+
+We can use **distributed locks** to synchronize access to the ticket across multiple processes and/or machines. This will prevent other users from booking the same ticket while the user is filling out the booking form. Distributed locks can be implemented using a distributed lock manager like ZooKeeper or etcd.
+
+When a user starts the booking process, they acquire a lock on the ticket. If the user doesn't complete the booking within a certain amount of time, the lock is released and the ticket is made available to other users.
+
+Set TTL (Time to Live) for the lock to release the lock automatically if the user doesn't complete the booking within a certain amount of time.
+
+Challenges:
+
+- Handling failures: Distributed locks can be complex to implement and maintain, especially in a distributed system. We need to handle edge cases such as network failures, server crashes, etc. to ensure that the locks are released in a timely manner.
+
+## Support handling of large number of concurrent users (10M for popular events)
+
+### Caching
+
+Cache the data with high read load, such as event details, seat maps, and low update frequency. This will reduce the load on the database and improve the performance of the system.
+
+Challenges:
+
+- Cache invalidation: We need to handle cache invalidation to ensure that the data is up-to-date. We can use a cache eviction policy like LRU (Least Recently Used) to remove stale data from the cache.
+- Cache consistency: We need to ensure that the data in the cache is consistent with the data in the database. We can use a cache update policy like write-through or write-behind to keep the data in the cache up-to-date.
+
+### Load balancing
+
+Use a load balancer to distribute the incoming requests to the appropriate server. This will ensure that the system can handle a large number of concurrent users and provide high availability and scalability.
+
+### Scaling
+
+Scale the system horizontally by adding more servers to handle the load. This will ensure that the system can handle a large number of concurrent users and provide high availability and scalability.
+
+Challenges:
+
+- Managing large number of servers: We need to manage a large number of servers to handle the load. We can use a container orchestration tool like Kubernetes to automate the deployment, scaling, and management of the servers.
+
+## Ensure user experience during peak traffic (10x increase in traffic)
+
+### SSE
+
+Use Server-Sent Events (SSE) to push real-time updates to the client. This will ensure that the user has a seamless experience during peak traffic and can see the latest updates without refreshing the page.
+
+Challenges:
+
+- Connection handling: We need to handle a large number of connections to the server. We can use a connection pool to manage the connections and ensure that the server can handle the load.
+- For large events, seat maps can be filled so quickly that the user may only see the event as sold out. We can use a queue to manage the updates and ensure that the user can see the latest updates in real-time.
+
+### Virtual waiting room
+
+Use a virtual waiting room to manage the user traffic during peak traffic. This will ensure that the user has a seamless experience and can book the tickets without any issues.
+
+Components:
+
+- Queue: The queue manages the user traffic and ensures that the users are served in a fair manner.
+- Websocket: The websocket is used to push real-time updates to the client and notify the user when it's their turn to book the tickets.
+
