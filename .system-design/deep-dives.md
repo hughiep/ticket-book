@@ -108,3 +108,39 @@ Components:
 - Queue: The queue manages the user traffic and ensures that the users are served in a fair manner.
 - Websocket: The websocket is used to push real-time updates to the client and notify the user when it's their turn to book the tickets.
 
+## Improve searching and viewing events latency
+
+### Indexes and Query optimization
+
+Use indexes to improve the performance of the search and view events queries. This will reduce the latency of the queries and improve the user experience.
+
+Challenges:
+
+- For partial string match queries, standard indexes may not be sufficient. We can use full-text search indexes like Elasticsearch to improve the performance of the queries.
+- SQL optimization: We can optimize the SQL queries to improve the performance of the queries. This can involve creating indexes, rewriting queries, or using query hints to improve performance.
+
+### Full-text indexes in the db
+
+Use full-text indexes in the database to improve the performance of the search queries. This will reduce the latency of the queries and improve the user experience.
+
+[https://stackoverflow.com/questions/3645746/what-is-a-fulltext-index-and-when-should-i-use-it]
+
+### Using a search engine
+
+Use a search engine like Elasticsearch to improve the performance of the search queries. This will reduce the latency of the queries and improve the user experience.
+
+Challenges:
+
+- Syncing data: We need to sync the data between the database and the search engine to ensure that the data is up-to-date. We can use a change data capture tool like Debezium to capture the changes in the database and sync the data to the search engine.
+- Maintaining an Elasticsearch adds additional infra complexity and extra cost
+
+*To improve search frequenltly searched events can be cached in memory like Redis.
+Or we can implement query result caching and edge caching.
+
+- Elasticsearch has a built-in caching mechanism that can be used to cache the search results and improve the performance of the queries.
+- Edge caching: We can use a CDN (Content Delivery Network) to cache the search results at the edge and improve the performance of the queries. AWS CloudFront, Akamai, etc.
+
+Challenge:
+
+- Consistency between cached data and real-time data: We need to ensure that the cached data is consistent with the real-time data. We can use cache invalidation policies like TTL (Time to Live) or write-through to keep the data up-to-date.
+- Require extra infra and cost to maintain the cache.
