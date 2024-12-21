@@ -50,3 +50,10 @@ Distributed cache is a cache that is distributed across multiple nodes in a clus
 ## Load balancer
 
 A load balancer is a device or software that distributes incoming network traffic across multiple servers. Algorithms used by load balancers include round-robin, least connections, and IP hash.
+
+## CDN Push vs Pull
+
+Push: Content is pushed to the CDN by the origin server. This is useful for static content that does not change frequently.
+Pull: Content is pulled from the origin server by the CDN when requested by the client. This is useful for dynamic content that changes frequently.
+
+## 
