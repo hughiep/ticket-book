@@ -14,6 +14,10 @@ export class BookingService {
     private ticketRepository: Repository<Ticket>,
   ) {}
 
+  async getTickets(): Promise<Ticket[]> {
+    return await this.ticketRepository.find();
+  }
+
   async createBooking(ticketOrder: CreateBookingDto): Promise<Booking> {
     return await this.bookingRepository.manager.transaction(
       async (transactionalEntityManager: EntityManager) => {

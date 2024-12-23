@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - "5433:5432"
+    # set shared memory limit when using docker-compose
+    #shm_size: 128mb
+    # or set shared memory limit when deploy via swarm stack
+    #volumes:
+    #  - type: tmpfs
+    #    target: /dev/shm
+    #    tmpfs:
+    #      size: 134217728 # 128*2^20 bytes = 128Mb
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_USER: example
+      POSTGRES_DB: booking
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  caching:
+    container_name: booking_caching
+    image: redis
+    ports:
+      - 6379:6379
+    restart: always
+    env_file:
+      - .env
+    command:
+      - /bin/sh
+      - -c
+      # - https://docs.docker.com/reference/compose-file/interpolation/#:~:text=You%20can%20use%20a%20%24%24,t%20want%20processed%20by%20Compose.
+      # - Double dollars, so that the variable is not interpolated by Docker Compose
+      # - Surround by quotes, so that the shell does not split the password
+      # - The ${variable:?message} syntax causes shell to exit with a non-zero
+      #   code and print a message, when the variable is not set or empty
+      - redis-server --requirepass "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"
+    volumes:
+      - redis-data:/root/redis
+
+volumes:
+  postgres-data:
+  redis-data:

@@ -7,7 +7,6 @@ import { Booking } from './booking.entity';
 export enum TicketStatus {
   AVAILABLE = 'available',
   BOOKED = 'booked',
-  CANCELLED = 'cancelled',
 }
 
 @Entity()
@@ -26,7 +25,7 @@ export class Ticket {
 
   @Column({
     type: 'enum',
-    enum: ['available', 'booked', 'confirmed'],
+    enum: ['available', 'booked'],
     default: 'available',
   })
   status: TicketStatus;
