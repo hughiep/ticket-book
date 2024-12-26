@@ -1,11 +1,20 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { EventService } from './event.service';
+import { EventSearchService } from './modules/search.service';
 
-@Controller()
+@Controller('events')
 export class EventController {
-  constructor(private readonly eventService: EventService) {}
+  constructor(
+    private readonly eventService: EventService,
+    private readonly eventSearchService: EventSearchService,
+  ) {}
 
-  @Get()
+  @Get('search')
+  async searchEvents(@Query('query') query: string) {
+    return this.eventSearchService.search(query);
+  }
+
+  @Get(':id')
   getEvent(id: number) {
     return this.eventService.getEventById(id);
   }
